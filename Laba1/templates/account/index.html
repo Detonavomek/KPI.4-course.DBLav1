@@ -1,0 +1,9 @@
+{% if latest %}
+    <ul>
+    {% for m in latest %}
+        <li><a href="/account/{{ m.id }}/">{{ m.manager }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No managers are available.</p>
+{% endif %}

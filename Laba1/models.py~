@@ -1,0 +1,41 @@
+from django.db import models
+import os
+from django.conf import settings
+from django.shortcuts import render
+import xml.etree.ElementTree as ET 
+import MySQLdb
+
+class Account(models.Model):
+	amount = models.IntegerField(default=0)
+	manager = models.CharField(max_length=50)
+	dateCreating = models.DateTimeField()
+	
+	#def ParseXML():
+	#	tree = ET.parse(os.path.join(settings.STATIC_ROOT, 'account.xml'))
+	#	root = tree.getroot()
+	#	xmlfiledata = []
+	#	for items in root:
+	#		xmlfiledata.append({'amount'})
+	
+	def AddToDB(account):
+		db = MySQLdb.connect(host='localhost', user='root', password='letsykao', db='DBLaba1')
+		cursor = db.cursor()
+		cursor.execute("insert into Laba1_account values(" + account.amount + "," + account.manager + "," + account.dateCreating + ";")
+		cursor.close()
+		db.close()	
+
+class Pet(models.Model):
+	name = models.CharField(max_length=15)
+	age = models.IntegerField(default=0)
+	specie = models.CharField(max_length=15)
+
+class Job(models.Model):
+	name = models.CharField(max_length = 20)
+	salary = models.IntegerField(default=0)
+
+class Human(models.Model):
+	account = models.ForeignKey(Account)
+	job = models.ForeignKey(Job)
+	pet = models.ForeignKey(Pet)
+	name = models.CharField(max_length=20)
+	age = models.IntegerField(default=0)
