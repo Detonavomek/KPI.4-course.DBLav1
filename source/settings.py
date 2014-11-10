@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')#57k87zvok#=05cjuj)jpqw_3o!u&zgv6rr*t7thjn#4=ab+9'
+SECRET_KEY = 'sefger)lfudhf8*(Y@#R&(#T&R*OGFIOEVLBf79pbc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,6 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'main'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -47,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'Laba1DB.urls'
+ROOT_URLCONF = 'source.urls'
 
-WSGI_APPLICATION = 'Laba1DB.wsgi.application'
+WSGI_APPLICATION = 'source.wsgi.application'
 
 
 # Database
@@ -57,10 +59,12 @@ WSGI_APPLICATION = 'Laba1DB.wsgi.application'
 
 DATABASES = {
     'default': {
-        'E'ENGINE': 'django.db.backends.mysql',
-        ''OPTIONS': {
-            'read_default_file': '/etc/mysql/my.cnf',NGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dblab1',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
