@@ -6,20 +6,11 @@ from datetime import datetime
 
 
 def index(request):
-    # account_data = {
-    # 	'amount': 122,
-    # 	'manager': 'asjfpoi',
-    # 	'dateCreating': datetime.now(),
-    # }
-    # account = Account(account_data)
-
-    pet_data = {
-        'name': 'pet name 1',
-        'age': 34,
-        'specie': 'sold',
-    }
-    pet = Pet(pet_data)
-    pet.insert()
-    # account.manager = 'qwerty123'
-    # account.insert()
+    # pet = Pet()
+    pet = Pet.get(5)
+    # pet.params['name'] = 'newfsdf6213'
+    # pet.params['age'] = '444'
+    # pet.params['specie'] = 'new_sp_44421'
+    pet.save()
+    pet.delete()
     return HttpResponse('OK')
