@@ -1,0 +1,71 @@
+{% load bootstrap3 %}
+{% load table_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<h2>
+		{% buttons %}
+			Home page
+	        <button type="submit" class="btn btn-success pull-right add-element">
+	            Add {% bootstrap_icon "plus" %}
+	        </button>
+	    {% endbuttons %}
+    </h2>
+	<table class="table" border="2">
+		{% for row in rows %}
+			<tr>
+				{% table_row row %}
+			</tr>
+		{% endfor %}
+	</table>
+
+<!-- Modal -->
+<div class="modal fade" id="add_element_modal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="loginModal">Login</h4>
+      </div>
+      <div class="modal-body add-element-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="add_submit" type="button" class="btn btn-primary">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+	(function() {
+    $(document).ready(function() {
+        $(".add-element").on('click', function(evnt) {
+            $.get("/add/", function(data) {
+                $(".add-element-body").html(data.html);
+                $("#add_element_modal").modal('show');
+            });
+        });
+        $("#add_submit").on('click', function(evnt) {
+            var form_data = $("#add_element_modal").serialize();
+            var url = $("#add_element_modal").attr('action');
+            $.post(url, form_data, function(data) {
+                if (data.status == 'ok') {
+                    window.location.href = data.next_url
+                } else {
+                    $(".add-element-body").html(data.html);
+                }
+            });
+        });
+    });
+})();
+</script>

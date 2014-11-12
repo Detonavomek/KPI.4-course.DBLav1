@@ -2,7 +2,6 @@ from source.settings import DATABASES
 from django.db import models
 import os
 import MySQLdb
-#import xml.etree.ElementTree as ET
 
 
 def execute_query(query, select=False):
@@ -10,7 +9,6 @@ def execute_query(query, select=False):
         DATABASES['default']['HOST'], DATABASES['default']['USER'],
         DATABASES['default']['PASSWORD'], DATABASES['default']['NAME'])
     cursor = db.cursor()
-    # print query
     if select:
         cursor.execute(query)
     else:
@@ -36,8 +34,24 @@ class MyORM():
         row = [el for el in row]
         for index, item in enumerate(cls.table_fields):
             obj.params[item] = row[index]
-        print obj.params
         return obj
+
+    @classmethod
+    def get_all(cls):
+        fields_data = []
+        rows = execute_query(
+            "SELECT id, %s FROM %s;" % (cls.get_table_field(), cls.table_name), True)
+        objs = []
+        for row in rows:
+            obj = cls()
+            print '> ', obj.params
+            row = [el for el in row]
+            obj.id = row.pop(0)
+            for index, item in enumerate(cls.table_fields):
+                print '>>> ', item
+                obj.params[item] = row[index]
+            objs.append(obj)
+        return objs
 
     @classmethod
     def get_table_field(cls):
@@ -57,7 +71,6 @@ class MyORM():
         return ', '.join(result)
 
     def save(self):
-
         if not getattr(self, 'id', None):
             execute_query("INSERT INTO %s(%s) VALUES(%s);" %
                           (self.table_name, self.get_table_field(), self.get_params()))
@@ -71,12 +84,28 @@ class MyORM():
         execute_query("DELETE FROM %s WHERE id=%i;" %
                       (self.table_name, self.id))
 
-
-class Account(MyORM):
-    table_name = "Laba1_account"
-    table_fields = ["amount", "manager", "dateCreating"]
+    def to_string(self):
+        return str(self.id)
 
 
-class Pet(MyORM):
-    table_name = "Laba1_pet"
-    table_fields = ["name", "age", "specie"]
+class Table1(MyORM):
+    table_name = "table1"
+    table_fields = ["field1", "field2", "date"]
+
+    def to_string(self):
+        return self.params['field1']
+
+
+class Table2(MyORM):
+    table_name = "table2"
+    table_fields = ["field3", "field4", "date"]
+
+    def to_string(self):
+        return str(self.params['date']) + ": " + self.params['field4']
+
+
+class Table3(MyORM):
+    table_name = "table3"
+    table_fields = ["table1_id", "table2_id", "field5"]
+
+main_table = Table3

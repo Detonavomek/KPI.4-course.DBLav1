@@ -1,11 +1,9 @@
 from django.conf.urls import patterns, include, url
 
-from django.contrib import admin
-admin.autodiscover()
+from main import views as main_views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'main.views.index', name='index'),
-    # url(r'^account/', include('main.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', main_views.home, name='home'),
+    url(r'^add/$', main_views.add, name='add'),
 )
